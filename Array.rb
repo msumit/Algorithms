@@ -52,7 +52,20 @@ class Array
   def bottom_up_merge_sort
     self.clone.bottom_up_merge_sort!
   end
+
+  def quick_sort
+    self.clone.quick_sort!
+  end
   
+  def quick_sort!
+    self.shuffle!
+    qsort 0, self.length-1
+  end
+
+  def three_way_sort!
+    self.shuffle!
+    three_part 0, self.length-1
+  end
 
   private 
 
@@ -101,13 +114,65 @@ class Array
   	end
   end
 
+  def qsort low, high
+    return if high <= low
+    j = partition(low, high)
+    qsort low, j-1
+    qsort j+1, high
+  end
+
+  def partition low, high
+    i, j = low+1, high
+
+    while true
+      while self[i] < self[low]
+        break if i == high
+        i+=1
+      end  
+
+      while self[low] < self[j]
+        break if j == low
+        j-=1
+      end
+
+      break if i >= j
+      self[i], self[j] = self[j], self[i]      
+    end
+
+    self[low], self[j] = self[j], self[low]
+    j
+  end
+
+  def three_part low, high    
+    return if high <= low
+    
+    lt, gt, i, pivot = low, high, low, self[low]
+
+    while i<=gt
+      c = self[i] <=> pivot
+
+      if c == -1
+        self[lt], self[i] = self[i], self[lt]
+        lt+=1
+        i+=1
+      elsif c == 1
+        self[gt], self[i] = self[i], self[gt]
+        gt-=1      
+      else
+        i+=1        
+      end
+    end
+    three_part low, lt-1
+    three_part gt+1, high
+  end
+
 end
 
 arr = [3, -5, -11, -17, -18]
 puts arr.sorted? 'DSC'
 
-arr = [4, 6, -1, 23, 89, 0, 99, -3]
+arr = [4, 6, -3, 23, 89, 0, 89, -3]
 
-arr.bottom_up_merge_sort!
-puts arr
+arr.three_way_sort!
+puts arr.to_s
 puts arr.sorted? 
