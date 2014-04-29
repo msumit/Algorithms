@@ -67,6 +67,25 @@ class Array
     three_part 0, self.length-1
   end
 
+  def heap_sort
+    self.clone.heap_sort!
+  end
+
+  def heap_sort!
+    n = self.length-1
+    k = n/2
+    while k>=0
+      sink k, n
+      k-=1
+    end
+
+    while n>0
+      self[0], self[n] = self[n], self[0]
+      n-=1
+      sink 0, n
+    end
+  end
+
   private 
 
   def divide aux, low, high
@@ -145,7 +164,7 @@ class Array
 
   def three_part low, high    
     return if high <= low
-    
+
     lt, gt, i, pivot = low, high, low, self[low]
 
     while i<=gt
@@ -166,6 +185,16 @@ class Array
     three_part gt+1, high
   end
 
+  def sink k, n
+    while k<n
+      j = 2*k     
+      j+=1 if j<n-1 && self[j]<self[j+1]     
+      break if j>n || self[k]>=self[j]
+      self[k], self[j] = self[j], self[k]
+      k = j   
+    end 
+  end
+
 end
 
 arr = [3, -5, -11, -17, -18]
@@ -173,6 +202,7 @@ puts arr.sorted? 'DSC'
 
 arr = [4, 6, -3, 23, 89, 0, 89, -3]
 
-arr.three_way_sort!
+arr.to_s
+arr.heap_sort!
 puts arr.to_s
 puts arr.sorted? 
