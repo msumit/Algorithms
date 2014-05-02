@@ -4,7 +4,7 @@ List of Algorithms
 1. Shell Sort
 2. Merge Sort and Bottom Up Merge Sort
 3. Quick Sort and 3-Way Quick Sort
-4. Heap Sort
+4. Max Priority Queue and Heap Sort
 5. BST
 6. 2-3 Search Trees
 7. Red-Black BSTs
